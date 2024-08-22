@@ -1,9 +1,9 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public class Reaction {
+public class Reacoes {
     int id
-    int commentId;
+    int comentarioId;
     int perfilId;
     int postId;
     String reaction;

@@ -1,21 +1,20 @@
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Date;  
 
-public class Like {
+public class Comentatios {
     int id;
-    int postId
+    int postagemId
     int perfilId
-    new Date data_like
+    String comentatio
     boolean like
 
-    public Map<String, Object> generateObject(int postId, int id, int perfilId, Date data_like, boolean like) {
-        if (perfilId > 0 && postId > 0) {
+    public Map<String, Object> generateObject(int postagemId, int id, int perfilId, String comentatio, boolean like) {
+        if (perfilId > 0 && comentatio != null) {
              Map<String, Object> dicionario = new HashMap<>();
             dicionario.put("id", id);
-            dicionario.put("postId", postId);
+            dicionario.put("postagemId", postagemId);
             dicionario.put("perfilId", perfilId);
-            dicionario.put("data_like", data_like);
+            dicionario.put("comentatio", comentatio);
             dicionario.put("like", like);
             return dicionario;
         }

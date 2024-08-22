@@ -1,34 +1,38 @@
-Post: {
+postagem: {
     id: Number
-    attachmentId: Number ?? null
+    arquivoId: Number ?? null
     perfilId: Number 
-    title: String
-    label: String 
+    titulo: String
+    legenda: String 
 }
 
-Like: {
+likes: {
     id: Number
-    postId: Number
+    postagemId: Number
     perfilId: Number
     like: Boolean
     data_like: Date
 }
 
-Comment: {
+comentarios: {
     id: Number
-    postId: Number
+    postagemId: Number
     perfilId: Number
-    comment: String
+    comentario: String
 }
 
-Reaction: {
+reacoes: {
     id: Number
-    commentId: Number
-    postId: Number
+    comentarioId: Number
+    postagemId: Number
     perfilId: Number
-    reaction: String
+    reacao: String
 }
 
+funcoes: {
+    nome: String
+    userIds: [Number]
+}
 
 
 
