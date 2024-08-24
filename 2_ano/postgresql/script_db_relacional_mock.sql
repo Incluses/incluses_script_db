@@ -2,7 +2,7 @@
 INSERT INTO tipo_perfil (nome) VALUES ('Empresa');
 INSERT INTO tipo_perfil (nome) VALUES ('Usuário');
 
---situação trabalhista
+-- situação trabalhista
 INSERT INTO situacao_trabalhista (nome) VALUES ('Empregado');
 INSERT INTO situacao_trabalhista (nome) VALUES ('Procurando emprego');
 
@@ -13,7 +13,7 @@ INSERT INTO setor (nome) VALUES ('Energia');
 -- status_curso
 INSERT INTO status_curso (nome) VALUES ('Concluído');
 INSERT INTO status_curso (nome) VALUES ('Em andamento');
-INSERT INTO status_curso (nome) VALUES ('Não inciado');
+INSERT INTO status_curso (nome) VALUES ('Não iniciado');
 
 -- tipo_arquivo
 INSERT INTO tipo_arquivo (nome) VALUES ('Postagem');
@@ -25,7 +25,7 @@ INSERT INTO turno (nome) VALUES ('Vespertino');
 INSERT INTO turno (nome) VALUES ('Integral');
 INSERT INTO turno (nome) VALUES ('Noturno');
 
--- tipo_vaga 
+-- tipo_vaga
 INSERT INTO tipo_vaga (nome) VALUES ('Aberta');
 INSERT INTO tipo_vaga (nome) VALUES ('Fechada');
 
