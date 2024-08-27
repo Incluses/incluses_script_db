@@ -34,9 +34,13 @@ INSERT INTO endereco (rua, estado, numero) VALUES ('Rua A', 'São Paulo', 123);
 INSERT INTO endereco (rua, estado, numero) VALUES ('Rua B', 'Rio de Janeiro', 456);
 INSERT INTO endereco (rua, estado, numero) VALUES ('Avenida Paulista', 'São Paulo', 1000);
 
+-- arquivo
+INSERT INTO arquivo (nome, s3_url, s3_key, tamanho, fk_tipo_arquivo_id) VALUES ('documento1.pdf', 'http://s3.amazonaws.com/arquivo1.pdf', 'key1', '1MB', 1);
+INSERT INTO arquivo (nome, s3_url, s3_key, tamanho, fk_tipo_arquivo_id) VALUES ('documento2.docx', 'http://s3.amazonaws.com/arquivo2.docx', 'key2', '500KB', 2);
+
 -- perfil
-INSERT INTO perfil (nome, senha, email, biografia, fk_tipo_perfil_id) VALUES ('João', 'senha123', 'joao@exemplo.com', 'Biografia do João', 1);
-INSERT INTO perfil (nome, senha, email, biografia, fk_tipo_perfil_id) VALUES ('Maria', 'senha456', 'maria@exemplo.com', 'Biografia da Maria', 2);
+INSERT INTO perfil (nome, senha, email, biografia, fk_tipo_perfil_id, fk_arquivo_id) VALUES ('João', 'senha123', 'joao@exemplo.com', 'Biografia do João', 1,1);
+INSERT INTO perfil (nome, senha, email, biografia, fk_tipo_perfil_id,fk_arquivo_id) VALUES ('Maria', 'senha456', 'maria@exemplo.com', 'Biografia da Maria', 2,2);
 
 -- telefone
 INSERT INTO telefone (telefone, fk_perfil_id) VALUES ('123456789', 1);
@@ -64,10 +68,6 @@ INSERT INTO configuracao (notificacao, fk_perfil_id) VALUES (FALSE, 2);
 -- curso
 INSERT INTO curso (nome, fk_perfil_id, carga_horaria, descricao, fk_status_curso_id) VALUES ('Curso de Programação', 1, 40, 'Programação 101', 1);
 INSERT INTO curso (nome, fk_perfil_id, carga_horaria, descricao, fk_status_curso_id) VALUES ('Curso de Design', 2, 30, 'Design 101', 2);
-
--- arquivo
-INSERT INTO arquivo (nome, s3_url, s3_key, tamanho, fk_tipo_arquivo_id) VALUES ('documento1.pdf', 'http://s3.amazonaws.com/arquivo1.pdf', 'key1', '1MB', 1);
-INSERT INTO arquivo (nome, s3_url, s3_key, tamanho, fk_tipo_arquivo_id) VALUES ('documento2.docx', 'http://s3.amazonaws.com/arquivo2.docx', 'key2', '500KB', 2);
 
 -- material_curso
 INSERT INTO material_curso (nome, fk_curso_id, fk_arquivo_id, descricao) VALUES ('Material A', 1, 1, 'Material de estudo A');

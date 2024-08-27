@@ -54,6 +54,8 @@ CREATE TABLE perfil (
     email VARCHAR(100) UNIQUE NOT NULL,
     biografia VARCHAR(300),
     fk_tipo_perfil_id INT NOT NULL,
+    fk_arquivo_id INT NOT NULL,
+    Foreign Key (fk_arquivo_id) REFERENCES arquivo (id),
     FOREIGN KEY (fk_tipo_perfil_id) REFERENCES tipo_perfil (id)
 );
 
