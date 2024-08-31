@@ -51,15 +51,9 @@ INSERT INTO usuario (cpf, fk_perfil_id, fk_situacao_trabalhista_id, dt_nasciment
 INSERT INTO usuario (cpf, fk_perfil_id, fk_situacao_trabalhista_id, dt_nascimento) VALUES ('10987654321', 2, 2, '1985-05-15');
 
 -- empresa
-INSERT INTO empresa (cnpj, razao_social, fk_perfil_id, website, matriz_id, fk_endereco_id) VALUES ('12345678000195', 'J&F', 1, 'http://www.empresaA.com', 1, 3);
-INSERT INTO empresa (cnpj, razao_social, fk_perfil_id, website, matriz_id, fk_endereco_id) VALUES ('12345678000195', 'Swift', 1, 'http://www.empresaA.com', 1, 1);
-INSERT INTO empresa (cnpj, razao_social, fk_perfil_id, website, matriz_id, fk_endereco_id) VALUES ('10987654000196', 'Âmbar', 2, 'http://www.empresaB.com', 1, 2);
-
--- setor_empresa
-INSERT INTO setor_empresa (fk_empresa_id, fk_setor_id) VALUES (1, 1);
-INSERT INTO setor_empresa (fk_empresa_id, fk_setor_id) VALUES (1, 2);
-INSERT INTO setor_empresa (fk_empresa_id, fk_setor_id) VALUES (2, 1);
-INSERT INTO setor_empresa (fk_empresa_id, fk_setor_id) VALUES (3, 2);
+INSERT INTO empresa (cnpj, razao_social, fk_perfil_id, website, matriz_id, fk_endereco_id,fk_setor_id) VALUES ('12345678000195', 'J&F', 1, 'http://www.empresaA.com', 1, 3,1);
+INSERT INTO empresa (cnpj, razao_social, fk_perfil_id, website, matriz_id, fk_endereco_id,fk_setor_id) VALUES ('12365678008695', 'Swift', 1, 'http://www.empresaA.com', 1, 1,1);
+INSERT INTO empresa (cnpj, razao_social, fk_perfil_id, website, matriz_id, fk_endereco_id,fk_setor_id) VALUES ('00987654000196', 'Âmbar', 2, 'http://www.empresaB.com', 1, 2,1);
 
 -- configuracao
 INSERT INTO configuracao (notificacao, fk_perfil_id) VALUES (TRUE, 1);

@@ -47,6 +47,16 @@ CREATE TABLE endereco (
     numero INT NOT NULL
 );
 
+CREATE TABLE arquivo (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    s3_url VARCHAR(300),
+    s3_key VARCHAR(50),
+    tamanho VARCHAR(50),
+    fk_tipo_arquivo_id INT NOT NULL,
+    FOREIGN KEY (fk_tipo_arquivo_id) REFERENCES tipo_arquivo (id)
+);
+
 CREATE TABLE perfil (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -71,8 +81,10 @@ CREATE TABLE usuario (
     cpf VARCHAR(11) UNIQUE NOT NULL,
     fk_perfil_id INT NOT NULL,
     fk_situacao_trabalhista_id INT NOT NULL,
+    fk_curriculo_id INT,
     dt_nascimento DATE NOT NULL,
     FOREIGN KEY (fk_perfil_id) REFERENCES perfil (id),
+    Foreign Key (fk_curriculo_id) REFERENCES arquivo (id),
     FOREIGN KEY (fk_situacao_trabalhista_id) REFERENCES situacao_trabalhista (id)
 );
 
@@ -80,20 +92,14 @@ CREATE TABLE empresa (
     id SERIAL PRIMARY KEY,
     cnpj VARCHAR(14) UNIQUE NOT NULL,
     razao_social VARCHAR(100) NOT NULL,
-    fk_perfil_id INT NOT NULL,
     website VARCHAR(220),
     matriz_id INT,
+    fk_perfil_id INT NOT NULL,
     fk_endereco_id INT NOT NULL,
-    FOREIGN KEY (fk_endereco_id) REFERENCES endereco (id),
-    FOREIGN KEY (fk_perfil_id) REFERENCES perfil (id)
-);
-
-CREATE TABLE setor_empresa (
-    id SERIAL PRIMARY KEY,
-    fk_empresa_id INT NOT NULL,
     fk_setor_id INT NOT NULL,
     FOREIGN KEY (fk_setor_id) REFERENCES setor (id),
-    FOREIGN KEY (fk_empresa_id) REFERENCES empresa (id)
+    FOREIGN KEY (fk_endereco_id) REFERENCES endereco (id),
+    FOREIGN KEY (fk_perfil_id) REFERENCES perfil (id)
 );
 
 CREATE TABLE configuracao (
@@ -112,16 +118,6 @@ CREATE TABLE curso (
     fk_status_curso_id INT NOT NULL,
     FOREIGN KEY (fk_perfil_id) REFERENCES perfil (id),
     FOREIGN KEY (fk_status_curso_id) REFERENCES status_curso (id)
-);
-
-CREATE TABLE arquivo (
-    id SERIAL PRIMARY KEY,
-    nome VARCHAR(150) NOT NULL,
-    s3_url VARCHAR(300),
-    s3_key VARCHAR(50),
-    tamanho VARCHAR(50),
-    fk_tipo_arquivo_id INT NOT NULL,
-    FOREIGN KEY (fk_tipo_arquivo_id) REFERENCES tipo_arquivo (id)
 );
 
 CREATE TABLE material_curso (
