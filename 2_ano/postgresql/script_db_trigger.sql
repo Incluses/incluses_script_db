@@ -12,7 +12,7 @@ CREATE TABLE telefone_log(
 	operacao varchar(80) NOT NULL,
 	telefone_passado varchar(15),
 	telefone_alterado varchar(15),
-	usuario varchar(80)
+    alterado_por VARCHAR(255) 
 );
 
 CREATE TABLE endereco_log (
@@ -58,7 +58,7 @@ CREATE TABLE configuracao_log(
 	operacao varchar(80) NOT NULL,
 	notificacao_passado BOOLEAN,
 	notificacao_alterado BOOLEAN,
-	usuario varchar(80)
+    alterado_por VARCHAR(255) 
 );
 
 CREATE TABLE arquivo_log(
@@ -72,7 +72,7 @@ CREATE TABLE arquivo_log(
     s3_url_alterado VARCHAR(300),
     s3_key_alterado VARCHAR(50),
     tamanho_alterado VARCHAR(50),
-	usuario varchar(80)
+    alterado_por VARCHAR(255) 
 );
 
 CREATE TABLE curso_log (
@@ -101,24 +101,24 @@ CREATE TABLE vaga_log (
 -- Function
 CREATE OR REPLACE FUNCTION func_telefone_log() RETURNS trigger AS $$
 DECLARE
-    usuario varchar(80);
+    alterado_por varchar(80);
 BEGIN
 	SELECT current_user INTO usuario;
-	INSERT INTO telefone_log(id_telefone,data_alteracao,operacao,telefone_passado,telefone_alterado,usuario)
-		VALUES(NEW.id, current_date, TG_OP, old.telefone, new.telefone ,usuario);
+	INSERT INTO telefone_log(id_telefone,data_alteracao,operacao,telefone_passado,telefone_alterado,alterado_por)
+		VALUES(NEW.id, current_date, TG_OP, old.telefone, new.telefone ,alterado_por);
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION func_endereco_log() RETURNS trigger AS $$
 DECLARE
-    usuario varchar(80);
+    alterado_por varchar(80);
 BEGIN
 	SELECT current_user INTO usuario;
 	INSERT INTO endereco_log(endereco_id, operacao, rua_anterior, estado_anterior, numero_anterior, 
-                         rua_nova, estado_novo, numero_novo, usuario)
+                         rua_nova, estado_novo, numero_novo, alterado_por)
     VALUES(OLD.id, TG_OP, OLD.rua, OLD.estado, OLD.numero, 
-           NEW.rua, NEW.estado, NEW.numero, usuario);
+           NEW.rua, NEW.estado, NEW.numero, alterado_por);
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -245,7 +245,7 @@ DECLARE
     usuario varchar(80);
 BEGIN
 	SELECT current_user INTO usuario;
-	INSERT INTO configuracao_log(id_configuracao,data_alteracao,operacao,notificacao_passado,notificacao_alterado,usuario)
+	INSERT INTO configuracao_log(id_configuracao,data_alteracao,operacao,notificacao_passado,notificacao_alterado,alterado_por)
 		VALUES(NEW.id, current_date, TG_OP, old.notificacao, new.notificacao ,usuario);
     RETURN NEW;
 END;
@@ -265,7 +265,7 @@ BEGIN
     tamanho_passado,
     s3_url_alterado,
     s3_key_alterado,
-    tamanho_alterado,usuario)
+    tamanho_alterado,alterado_por)
 		VALUES(
 	NEW.id, 
 	current_date, 
@@ -352,22 +352,22 @@ FOR EACH ROW
 EXECUTE PROCEDURE func_endereco_log();
 
 CREATE TRIGGER trig_usuario_log
-AFTER UPDATE ON usuario
+AFTER INSERT OR UPDATE ON usuario
 FOR EACH ROW
 EXECUTE FUNCTION func_usuario_log();
 
 CREATE TRIGGER trig_perfil_usuario_log
-after UPDATE ON perfil
+after INSERT OR UPDATE ON perfil
 FOR EACH ROW
 EXECUTE FUNCTION func_perfil_usuario_log();
 
 CREATE TRIGGER trig_empresa_log
-AFTER UPDATE ON empresa
+AFTER INSERT OR UPDATE ON empresa
 FOR EACH ROW
 EXECUTE FUNCTION func_empresa_log();
 
 CREATE TRIGGER trig_perfil_empresa_log
-after UPDATE ON perfil
+after INSERT OR UPDATE ON perfil
 FOR EACH ROW
 EXECUTE FUNCTION func_perfil_empresa_log();
 

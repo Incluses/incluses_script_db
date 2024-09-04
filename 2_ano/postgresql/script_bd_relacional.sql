@@ -152,3 +152,12 @@ CREATE TABLE vaga (
     FOREIGN KEY (fk_empresa_id) REFERENCES empresa (id),
     FOREIGN KEY (fk_tipo_vaga) REFERENCES tipo_vaga (id)
 );
+
+CREATE TABLE inscricao_vaga (
+    id SERIAL PRIMARY KEY NOT NULL,
+    fk_usuario_id INT NOT NULL,
+    fk_vaga_id INT NOT NULL,
+    FOREIGN KEY (fk_vaga_id) REFERENCES vaga (id),
+    FOREIGN KEY (fk_usuario_id) REFERENCES usuario (id)
+);
+ 
