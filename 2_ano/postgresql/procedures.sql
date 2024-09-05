@@ -1,3 +1,5 @@
+-- Só falta testar :)
+
 -- Function para criar perfil
 CREATE OR REPLACE FUNCTION criar_perfil ( 
     p_nome VARCHAR,
