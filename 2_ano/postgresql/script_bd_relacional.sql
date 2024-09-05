@@ -1,9 +1,7 @@
 -- Criação do banco de dados e conexão
 --CREATE DATABASE diversis;
-
 -- Esta linha é usada apenas em psql e deve ser omitida se não estiver usando o cliente psql diretamente
 --\c diversis
-
 -- Criação das tabelas
 CREATE TABLE tipo_perfil (
     id SERIAL PRIMARY KEY,
@@ -44,6 +42,7 @@ CREATE TABLE endereco (
     id SERIAL PRIMARY KEY,
     rua VARCHAR(200) NOT NULL,
     estado VARCHAR(100) NOT NULL,
+    cidade VARCHAR(100) NOT NULL,
     numero INT NOT NULL
 );
 
@@ -64,8 +63,8 @@ CREATE TABLE perfil (
     email VARCHAR(100) UNIQUE NOT NULL,
     biografia VARCHAR(300),
     fk_tipo_perfil_id INT NOT NULL,
-    fk_arquivo_id INT NOT NULL,
-    Foreign Key (fk_arquivo_id) REFERENCES arquivo (id),
+    fk_ft_perfil_id INT,
+    Foreign Key (fk_ft_perfil_id) REFERENCES arquivo (id),
     FOREIGN KEY (fk_tipo_perfil_id) REFERENCES tipo_perfil (id)
 );
 
@@ -83,6 +82,8 @@ CREATE TABLE usuario (
     fk_situacao_trabalhista_id INT NOT NULL,
     fk_curriculo_id INT,
     dt_nascimento DATE NOT NULL,
+    pronomes VARCHAR(50) NOT NULL,
+    nome_social VARCHAR(100),
     FOREIGN KEY (fk_perfil_id) REFERENCES perfil (id),
     Foreign Key (fk_curriculo_id) REFERENCES arquivo (id),
     FOREIGN KEY (fk_situacao_trabalhista_id) REFERENCES situacao_trabalhista (id)
@@ -147,10 +148,10 @@ CREATE TABLE vaga (
     fk_turno_id INT NOT NULL,
     qnt_vagas INT NOT NULL,
     fk_empresa_id INT NOT NULL,
-    fk_tipo_vaga INT NOT NULL,
+    fk_tipo_vaga_id INT NOT NULL,
     FOREIGN KEY (fk_turno_id) REFERENCES turno (id),
     FOREIGN KEY (fk_empresa_id) REFERENCES empresa (id),
-    FOREIGN KEY (fk_tipo_vaga) REFERENCES tipo_vaga (id)
+    FOREIGN KEY (fk_tipo_vaga_id) REFERENCES tipo_vaga (id)
 );
 
 CREATE TABLE inscricao_vaga (
@@ -160,4 +161,3 @@ CREATE TABLE inscricao_vaga (
     FOREIGN KEY (fk_vaga_id) REFERENCES vaga (id),
     FOREIGN KEY (fk_usuario_id) REFERENCES usuario (id)
 );
- 
