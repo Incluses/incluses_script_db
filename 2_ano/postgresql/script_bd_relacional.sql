@@ -18,17 +18,7 @@ CREATE TABLE setor (
     nome VARCHAR(200) NOT NULL
 );
 
-CREATE TABLE status_curso (
-    id SERIAL PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL
-);
-
 CREATE TABLE tipo_arquivo (
-    id SERIAL PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE turno (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(50) NOT NULL
 );
@@ -43,15 +33,16 @@ CREATE TABLE endereco (
     rua VARCHAR(200) NOT NULL,
     estado VARCHAR(100) NOT NULL,
     cidade VARCHAR(100) NOT NULL,
+    cep VARCHAR(8) NOT NULL,
     numero INT NOT NULL
 );
 
 CREATE TABLE arquivo (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(150) NOT NULL,
-    s3_url VARCHAR(300),
-    s3_key VARCHAR(50),
-    tamanho VARCHAR(50),
+    s3_url VARCHAR(300) NOT NULL,
+    s3_key VARCHAR(50) NOT NULL,
+    tamanho VARCHAR(50) NOT NULL,
     fk_tipo_arquivo_id INT NOT NULL,
     FOREIGN KEY (fk_tipo_arquivo_id) REFERENCES tipo_arquivo (id)
 );
@@ -79,14 +70,12 @@ CREATE TABLE usuario (
     id SERIAL PRIMARY KEY,
     cpf VARCHAR(11) UNIQUE NOT NULL,
     fk_perfil_id INT NOT NULL,
-    fk_situacao_trabalhista_id INT NOT NULL,
     fk_curriculo_id INT,
     dt_nascimento DATE NOT NULL,
     pronomes VARCHAR(50) NOT NULL,
     nome_social VARCHAR(100),
     FOREIGN KEY (fk_perfil_id) REFERENCES perfil (id),
     Foreign Key (fk_curriculo_id) REFERENCES arquivo (id),
-    FOREIGN KEY (fk_situacao_trabalhista_id) REFERENCES situacao_trabalhista (id)
 );
 
 CREATE TABLE empresa (
@@ -94,7 +83,6 @@ CREATE TABLE empresa (
     cnpj VARCHAR(14) UNIQUE NOT NULL,
     razao_social VARCHAR(100) NOT NULL,
     website VARCHAR(220),
-    matriz_id INT,
     fk_perfil_id INT NOT NULL,
     fk_endereco_id INT NOT NULL,
     fk_setor_id INT NOT NULL,
@@ -114,11 +102,8 @@ CREATE TABLE curso (
     id SERIAL PRIMARY KEY,
     descricao VARCHAR(300) NOT NULL,
     fk_perfil_id INT NOT NULL,
-    carga_horaria INT NOT NULL,
     nome VARCHAR(100) NOT NULL,
-    fk_status_curso_id INT NOT NULL,
     FOREIGN KEY (fk_perfil_id) REFERENCES perfil (id),
-    FOREIGN KEY (fk_status_curso_id) REFERENCES status_curso (id)
 );
 
 CREATE TABLE material_curso (
@@ -126,7 +111,7 @@ CREATE TABLE material_curso (
     nome VARCHAR(255) NOT NULL,
     fk_curso_id INT NOT NULL,
     fk_arquivo_id INT NOT NULL,
-    descricao VARCHAR(300),
+    descricao VARCHAR(500),
     FOREIGN KEY (fk_curso_id) REFERENCES curso (id),
     FOREIGN KEY (fk_arquivo_id) REFERENCES arquivo (id)
 );
@@ -142,14 +127,9 @@ CREATE TABLE inscricao_curso (
 CREATE TABLE vaga (
     id SERIAL PRIMARY KEY,
     descricao VARCHAR(300) NOT NULL,
-    emprego VARCHAR(100) NOT NULL,
-    jornada INT NOT NULL,
-    salario NUMERIC,
-    fk_turno_id INT NOT NULL,
-    qnt_vagas INT NOT NULL,
+    nome VARCHAR(100) NOT NULL,
     fk_empresa_id INT NOT NULL,
     fk_tipo_vaga_id INT NOT NULL,
-    FOREIGN KEY (fk_turno_id) REFERENCES turno (id),
     FOREIGN KEY (fk_empresa_id) REFERENCES empresa (id),
     FOREIGN KEY (fk_tipo_vaga_id) REFERENCES tipo_vaga (id)
 );
@@ -160,4 +140,11 @@ CREATE TABLE inscricao_vaga (
     fk_vaga_id INT NOT NULL,
     FOREIGN KEY (fk_vaga_id) REFERENCES vaga (id),
     FOREIGN KEY (fk_usuario_id) REFERENCES usuario (id)
+);
+
+CREATE TABLE avaliacao_curso (
+    id SERIAL PRIMARY KEY NOT NULL,
+    nota NUMERIC NOT NULL,
+    fk_curso_id INT REFERENCES curso(id),
+    fk_usuario_id INT REFERENCES usuario(id)
 );
