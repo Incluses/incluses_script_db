@@ -2,10 +2,10 @@ FROM postgres
 
 COPY ./postgresql/script_bd_relacional.sql /docker-entrypoint-initdb.d/
 COPY ./postgresql/script_db_trigger.sql /docker-entrypoint-initdb.d/
+COPY ./postgresql/procedures.sql /docker-entrypoint-initdb.d/
 COPY ./postgresql/script_db_relacional_mock.sql /docker-entrypoint-initdb.d/
-COPY ./postgresql/script_db_relacional/procedures.sql/ /docker-entrypoint-initdb.d/
 
-ENV POSTGRES_DB=postgres \
+ENV POSTGRES_DB=incluses \
     POSTGRES_USER=localhost \
     POSTGRES_PASSWORD=1234
 

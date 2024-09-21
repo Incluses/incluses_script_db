@@ -2,6 +2,7 @@
 --CREATE DATABASE diversis;
 -- Esta linha é usada apenas em psql e deve ser omitida se não estiver usando o cliente psql diretamente
 --\c diversis
+
 -- Criação das tabelas
 CREATE TABLE tipo_perfil (
     id SERIAL PRIMARY KEY,
@@ -40,8 +41,8 @@ CREATE TABLE endereco (
 CREATE TABLE arquivo (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(150) NOT NULL,
-    s3_url VARCHAR(300) NOT NULL,
-    s3_key VARCHAR(50) NOT NULL,
+    s3_url VARCHAR(1500),
+    s3_key VARCHAR(1024),
     tamanho VARCHAR(50) NOT NULL,
     fk_tipo_arquivo_id INT NOT NULL,
     FOREIGN KEY (fk_tipo_arquivo_id) REFERENCES tipo_arquivo (id)
@@ -55,7 +56,7 @@ CREATE TABLE perfil (
     biografia VARCHAR(300),
     fk_tipo_perfil_id INT NOT NULL,
     fk_ft_perfil_id INT,
-    Foreign Key (fk_ft_perfil_id) REFERENCES arquivo (id),
+    FOREIGN KEY (fk_ft_perfil_id) REFERENCES arquivo (id),
     FOREIGN KEY (fk_tipo_perfil_id) REFERENCES tipo_perfil (id)
 );
 
@@ -75,7 +76,7 @@ CREATE TABLE usuario (
     pronomes VARCHAR(50) NOT NULL,
     nome_social VARCHAR(100),
     FOREIGN KEY (fk_perfil_id) REFERENCES perfil (id),
-    Foreign Key (fk_curriculo_id) REFERENCES arquivo (id),
+    FOREIGN KEY (fk_curriculo_id) REFERENCES arquivo (id)
 );
 
 CREATE TABLE empresa (
@@ -103,7 +104,7 @@ CREATE TABLE curso (
     descricao VARCHAR(300) NOT NULL,
     fk_perfil_id INT NOT NULL,
     nome VARCHAR(100) NOT NULL,
-    FOREIGN KEY (fk_perfil_id) REFERENCES perfil (id),
+    FOREIGN KEY (fk_perfil_id) REFERENCES perfil (id)
 );
 
 CREATE TABLE material_curso (
@@ -135,7 +136,7 @@ CREATE TABLE vaga (
 );
 
 CREATE TABLE inscricao_vaga (
-    id SERIAL PRIMARY KEY NOT NULL,
+    id SERIAL PRIMARY KEY,
     fk_usuario_id INT NOT NULL,
     fk_vaga_id INT NOT NULL,
     FOREIGN KEY (fk_vaga_id) REFERENCES vaga (id),
@@ -143,7 +144,7 @@ CREATE TABLE inscricao_vaga (
 );
 
 CREATE TABLE avaliacao_curso (
-    id SERIAL PRIMARY KEY NOT NULL,
+    id SERIAL PRIMARY KEY,
     nota NUMERIC NOT NULL,
     fk_curso_id INT REFERENCES curso(id),
     fk_usuario_id INT REFERENCES usuario(id)

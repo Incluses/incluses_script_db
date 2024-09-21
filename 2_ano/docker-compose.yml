@@ -1,7 +1,7 @@
 services:
   db:
     build: .
-    image: diversis/db_diversis:1.0
+    image: incluses/db_incluses:1.0
     volumes:
       - ./postgresql:/docker-entrypoint-initdb.d
     ports:
