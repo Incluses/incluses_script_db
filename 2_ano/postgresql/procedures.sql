@@ -1,5 +1,35 @@
 -- Só falta testar :)
 
+-- Function para criar arquivo 
+CREATE OR REPLACE FUNCTION criar_arquivo(
+    a_nome VARCHAR,
+    a_s3_url VARCHAR,
+    a_s3_key VARCHAR,
+    a_tamanho VARCHAR,
+    a_tipo_arquivo VARCHAR
+) 
+RETURNS INT
+LANGUAGE plpgsql AS
+$$
+    DECLARE
+        tipo_arquivo_id INT;
+        arquivo_id INT;
+    BEGIN
+
+        -- Query para pegar o ID do tipo de perfil
+        SELECT tp.id INTO tipo_arquivo_id FROM tipo_arquivo tp WHERE tp.nome = a_tipo_arquivo;
+
+        -- Inserindo arquivo
+        INSERT INTO arquivo (nome, s3_url, s3_key, tamanho, fk_tipo_arquivo_id) VALUES
+        (a_nome, a_s3_url, a_s3_key, a_tamanho, tipo_arquivo_id) 
+        RETURNING id INTO arquivo_id;
+
+        RETURN arquivo_id;
+
+    COMMIT;
+    END;
+$$
+
 -- Function para criar perfil
 CREATE OR REPLACE FUNCTION criar_perfil ( 
     p_nome VARCHAR,
@@ -7,7 +37,6 @@ CREATE OR REPLACE FUNCTION criar_perfil (
     p_email VARCHAR,
     p_biografia VARCHAR,
     p_tipo_perfil VARCHAR,
-    p_foto_perfil_id INT,
     t_telefone VARCHAR
 )
 RETURNS INT
@@ -15,7 +44,6 @@ LANGUAGE plpgsql
 AS $$
 DECLARE
     tipo_perfil_id INT;
-
     tipo_arquivo_id INT;
     perfil_id INT;
 BEGIN
@@ -23,12 +51,12 @@ BEGIN
     SELECT tp.id INTO tipo_perfil_id FROM tipo_perfil tp WHERE tp.nome = p_tipo_perfil;
 
     -- Inserindo perfil
-    INSERT INTO perfil (nome, senha, email, biografia, tipo_perfil_id, p_foto_perfil_id)
-    VALUES (p_nome, p_senha, p_email, p_biografia, tipo_perfil_id, foto_perfil_id)
+    INSERT INTO perfil (nome, senha, email, biografia, fk_tipo_perfil_id)
+    VALUES (p_nome, p_senha, p_email, p_biografia, tipo_perfil_id)
     RETURNING id INTO perfil_id;
 
     -- Inserindo telefone
-    INSERT INTO telefone (numero, fk_perfil_id)
+    INSERT INTO telefone (telefone, fk_perfil_id)
     VALUES (t_telefone, perfil_id);
 
     RETURN perfil_id; -- Retornando o ID do perfil 
@@ -42,20 +70,26 @@ CREATE OR REPLACE FUNCTION deletar_perfil(
 RETURNS VOID
 LANGUAGE plpgsql AS
 $$
-BEGIN
-    -- Deletando configuração do perfil 
-    DELETE FROM configuracao WHERE fk_perfil_id = perfil_id;
+    DECLARE 
+        arquivo_id INT;
 
-    -- Deletando telefone do perfil 
-    DELETE FROM telefone WHERE fk_perfil_id = perfil_id;
+    BEGIN
+        -- Deletando configuração do perfil 
+        DELETE FROM configuracao WHERE fk_perfil_id = perfil_id;
 
-    -- Deletando material dos cursos do perfil
-    DELETE FROM material_curso WHERE fk_curso_id IN (SELECT c.id FROM curso c WHERE c.fk_perfil_id = perfil_id);
+        -- Deletando telefone do perfil 
+        DELETE FROM telefone WHERE fk_perfil_id = perfil_id;
 
-    -- Deletando cursos do perfil  
-    DELETE FROM curso WHERE fk_perfil_id = perfil_id;
+        -- Deletando material dos cursos do perfil
+        DELETE FROM material_curso WHERE fk_curso_id IN (SELECT c.id FROM curso c WHERE c.fk_perfil_id = perfil_id);
 
-END;
+        -- Deletando foto de perfil na tabela de arquivo
+        -- aqui
+
+        -- Deletando cursos do perfil  
+        DELETE FROM curso WHERE fk_perfil_id = perfil_id;
+
+    END;
 $$;
 
 -- Procedure para cadastrar usuário
@@ -80,7 +114,7 @@ $$
 DECLARE
     perfil_id INT;
     curriculo_id INT;
-    tipo_arquivo_id INT;
+    arquivo_id INT;
     situacao_trabalhista_id INT;
 
 BEGIN
@@ -95,20 +129,16 @@ BEGIN
         t_telefone
     ) INTO perfil_id;
 
-    -- Criando currículo em arquivo
-    INSERT INTO arquivo (nome, s3_url, s3_key, tamanho, tipo_arquivo_id)
-    VALUES (a_nome_curriculo, a_s3_url_curriculo, a_s3_key_curriculo, a_tamanho_curriculo, tipo_arquivo_id)
-    RETURNING id INTO curriculo_id;
 
     -- Query para pegar o id da situação trabalhista
     SELECT st.id INTO situacao_trabalhista_id FROM situacao_trabalhista st WHERE st.nome = u_situacao_trabalhista;
 
     -- Inserindo usuário
-    INSERT INTO usuario (cpf, fk_perfil_id, fk_situacao_trabalhista_id, fk_curriculo_id, dt_nascimento, pronomes, razao_social)
-    VALUES (u_cpf, perfil_id, situacao_trabalhista_id, curriculo_id, u_dt_nascimento, u_pronomes, u_razao_social);
+    INSERT INTO usuario (cpf, fk_perfil_id, fk_situacao_trabalhista_id, dt_nascimento, pronomes, razao_social)
+    VALUES (u_cpf, perfil_id, situacao_trabalhista_id, u_dt_nascimento, u_pronomes, u_razao_social);
 
     -- Inserindo configuração
-    INSERT INTO configuracao (alguma_configuracao, fk_perfil_id)
+    INSERT INTO configuracao ( notificacao, fk_perfil_id)
     VALUES (FALSE, perfil_id);
 
     COMMIT;
@@ -127,6 +157,7 @@ CREATE OR REPLACE PROCEDURE cadastrar_empresa(
     -- Parâmetros do endereço
     en_rua VARCHAR,
     en_estado VARCHAR,
+    en_cidade VARCHAR,
     en_numero INT, 
 
     -- Parâmetros do perfil
@@ -134,7 +165,6 @@ CREATE OR REPLACE PROCEDURE cadastrar_empresa(
     p_senha VARCHAR,
     p_email VARCHAR,
     p_biografia VARCHAR,
-    p_foto_perfil_id INT,
     t_telefone VARCHAR
 ) LANGUAGE plpgsql AS
 $$
@@ -152,7 +182,6 @@ BEGIN
         p_email,
         p_biografia,
         'EMPRESA',
-        p_foto_perfil_id,
         t_telefone
     ) INTO perfil_id;
 
@@ -171,8 +200,8 @@ BEGIN
     VALUES (t_telefone, perfil_id);
 
     -- Inserindo endereço
-    INSERT INTO endereco (rua, estado, numero)
-    VALUES (en_rua, en_estado, en_numero)
+    INSERT INTO endereco (rua, estado, cidade, numero)
+    VALUES (en_rua, en_estado, en_cidade, en_numero)
     RETURNING id INTO endereco_id;
 
     -- Inserindo empresa
