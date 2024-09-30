@@ -2,11 +2,10 @@ postagem: {
     id: Number
     arquivoId: Number ?? null
     perfilId: Number 
-    titulo: String
     legenda: String 
     likes: [
         {
-            perfilId: Number, 
+            perfilId: UUID, 
             data_like: Date
         }
     ]
@@ -21,6 +20,11 @@ postagem: {
 funcoes: {
     nome: String
     userIds: [Number]
+}
+
+situacao_trabalhista: {
+    nome: String
+    usersIds: [UUID]
 }
 
 Conversas: {
