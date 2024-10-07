@@ -20,7 +20,7 @@ postagem: {
 funcoes: {
     id: UUID
     nome: String
-    userIds: [Number]
+    userIds: [UUID]
 }
 
 situacao_trabalhista: {
