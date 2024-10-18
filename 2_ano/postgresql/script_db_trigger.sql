@@ -1,7 +1,7 @@
 -- Criação das tabelas de log
 CREATE TABLE telefone_log (
     id SERIAL PRIMARY KEY,
-    telefone_id INT,
+    telefone_id UUID,
     data_alteracao DATE NOT NULL,
     operacao VARCHAR(80) NOT NULL,
     telefone_passado VARCHAR(15),
@@ -11,7 +11,7 @@ CREATE TABLE telefone_log (
 
 CREATE TABLE endereco_log (
     id SERIAL PRIMARY KEY,
-    endereco_id INT,
+    endereco_id UUID,
     operacao VARCHAR(80) NOT NULL,
     rua_anterior VARCHAR(200),
     estado_anterior VARCHAR(100),
@@ -25,7 +25,7 @@ CREATE TABLE endereco_log (
 
 CREATE TABLE usuario_log (
     id SERIAL PRIMARY KEY,
-    usuario_id INT,
+    usuario_id UUID,
     alterado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     campo_alterado VARCHAR(255) NOT NULL,
     valor_antigo TEXT,
@@ -35,7 +35,7 @@ CREATE TABLE usuario_log (
 
 CREATE TABLE perfil_log (
     id SERIAL PRIMARY KEY,
-    perfil_id INT,
+    perfil_id UUID,
     alterado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     campo_alterado VARCHAR(255) NOT NULL,
     valor_antigo TEXT,
@@ -45,7 +45,7 @@ CREATE TABLE perfil_log (
 
 CREATE TABLE empresa_log (
     id SERIAL PRIMARY KEY,
-    empresa_id INT,
+    empresa_id UUID,
     alterado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     campo_alterado VARCHAR(255) NOT NULL,
     valor_antigo TEXT,
@@ -55,7 +55,7 @@ CREATE TABLE empresa_log (
 
 CREATE TABLE configuracao_log (
     id SERIAL PRIMARY KEY,
-    configuracao_id INT,
+    configuracao_id UUID,
     data_alteracao DATE NOT NULL,
     operacao VARCHAR(80) NOT NULL,
     notificacao_passado BOOLEAN,
@@ -65,7 +65,7 @@ CREATE TABLE configuracao_log (
 
 CREATE TABLE arquivo_log (
     id SERIAL PRIMARY KEY,
-    arquivo_id INT,
+    arquivo_id UUID,
     data_alteracao DATE NOT NULL,
     operacao VARCHAR(80) NOT NULL,
     s3_url_passado VARCHAR(300),
@@ -79,7 +79,7 @@ CREATE TABLE arquivo_log (
 
 CREATE TABLE curso_log (
     id SERIAL PRIMARY KEY,
-    curso_id INT,
+    curso_id UUID,
     alterado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     campo_alterado VARCHAR(255) NOT NULL,
     valor_antigo TEXT,
@@ -90,7 +90,7 @@ CREATE TABLE curso_log (
 
 CREATE TABLE vaga_log (
     id SERIAL PRIMARY KEY,
-    vaga_id INT,
+    vaga_id UUID,
     alterado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     campo_alterado VARCHAR(255) NOT NULL,
     valor_antigo TEXT,

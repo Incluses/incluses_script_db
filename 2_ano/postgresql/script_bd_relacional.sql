@@ -37,8 +37,8 @@ CREATE TABLE endereco (
 CREATE TABLE arquivo (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nome VARCHAR(150) NOT NULL,
-    s3_url VARCHAR(1500),
-    s3_key VARCHAR(1024),
+    s3_url VARCHAR(1500) NOT NULL,
+    s3_key VARCHAR(1024) NOT NULL,
     tamanho VARCHAR(50) NOT NULL,
     fk_tipo_arquivo_id UUID NOT NULL,
     FOREIGN KEY (fk_tipo_arquivo_id) REFERENCES tipo_arquivo (id)
@@ -149,7 +149,7 @@ CREATE TABLE avaliacao_curso (
 CREATE TABLE permissao_vaga (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     permissao BOOLEAN DEFAULT false,
-    id_vaga UUID REFERENCES vaga (id)
+    fk_vaga_id UUID REFERENCES vaga (id)
 );
 
 CREATE TABLE permissao_curso (

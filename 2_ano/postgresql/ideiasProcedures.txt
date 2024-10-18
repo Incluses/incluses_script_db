@@ -1,9 +1,0 @@
-cadastrar_usuario
-cadastrar_empresa
-criar_material_curso
-deletar_usuario
-deletar_empresa 
-deletar_material_curso
-deletar_setor
-deletar_curso 
-deletar_vaga

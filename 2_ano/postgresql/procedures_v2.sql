@@ -36,6 +36,9 @@ CREATE OR REPLACE PROCEDURE deletar_curso(
         -- Deletando inscrições do curso 
         DELETE FROM inscricao_curso WHERE fk_curso_id = ANY(c_uuids);
 
+        -- Deletando permissões dos cursos
+        DELETE FROM permissao_curso WHERE fk_curso_id = ANY(c_uuids);
+
         -- Deletando curso(s)
         DELETE FROM curso WHERE id = ANY(c_uuids);
     END;
@@ -47,6 +50,9 @@ CREATE OR REPLACE PROCEDURE deletar_vaga(
     BEGIN
         -- Deletando inscrições das vagas
         DELETE FROM inscricao_vaga WHERE fk_vaga_id = ANY(v_uuids);
+
+        -- Deletando permissões das vagas
+        DELETE FROM permissao_vaga WHERE fk_vaga_id = ANY(v_uuids);
 
         -- Deletando vaga(s)
         DELETE FROM vaga WHERE id = ANY(v_uuids);
@@ -101,9 +107,15 @@ CREATE OR REPLACE PROCEDURE criar_curso(
     c_nome VARCHAR,
     c_perfil_id UUID
 ) LANGUAGE plpgsql AS $$
+    DECLARE 
+        id_curso UUID;
+        permissao BOOLEAN := false;
     BEGIN 
         -- Inserindo curso 
-        INSERT INTO curso(descricao, nome, fk_perfil_id) VALUES (c_descricao, c_nome, c_perfil_id);
+        INSERT INTO curso(descricao, nome, fk_perfil_id) VALUES (c_descricao, c_nome, c_perfil_id) RETURNING id INTO id_curso;
+
+        -- Inserindo permissão do curso 
+        INSERT INTO permissao_curso(fk_curso_id, permissao) VALUES (id_curso, permissao);
     END;
 $$;
 
@@ -265,9 +277,15 @@ CREATE OR REPLACE PROCEDURE criar_vaga(
     v_empresa_id UUID,
     v_tipo_vaga_id UUID
 ) LANGUAGE plpgsql AS $$
+    DECLARE
+        id_vaga UUID;
+        permissao BOOLEAN := false;
     BEGIN 
         -- Inserindo vaga
-        INSERT INTO vaga(descricao, nome, fk_empresa_id, fk_tipo_vaga_id) VALUES (v_descricao, v_nome, v_empresa_id, v_tipo_vaga_id);
+        INSERT INTO vaga(descricao, nome, fk_empresa_id, fk_tipo_vaga_id) VALUES (v_descricao, v_nome, v_empresa_id, v_tipo_vaga_id) RETURNING id INTO id_vaga;
+
+        -- Inserindo permissão da vaga
+        INSERT INTO permissao_vaga(fk_vaga_id, permissao) VALUES (id_vaga, permissao);
     END;
 $$;
 

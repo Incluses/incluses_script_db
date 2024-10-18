@@ -6,3 +6,13 @@ services:
       - ./postgresql:/docker-entrypoint-initdb.d
     ports:
       - '2345:5432'
+  mongo:
+    image: mongo:latest  
+    container_name: mongo_incluses  
+    ports:
+      - '27017:27017' 
+    volumes:
+      - ./mongo/mongo_mock:/docker-entrypoint-initdb.d  
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: localhost 
+      MONGO_INITDB_ROOT_PASSWORD: 1234
