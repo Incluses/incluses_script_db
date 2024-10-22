@@ -147,7 +147,7 @@ CREATE TABLE avaliacao_curso (
 CREATE TABLE permissao_vaga (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     permissao BOOLEAN DEFAULT false,
-    id_vaga UUID REFERENCES vaga (id)
+    fk_vaga_id UUID REFERENCES vaga (id)
 );
 
 CREATE TABLE permissao_curso (
