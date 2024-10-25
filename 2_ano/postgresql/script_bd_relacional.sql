@@ -37,8 +37,6 @@ CREATE TABLE endereco (
 CREATE TABLE arquivo (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nome VARCHAR(150) NOT NULL,
-    s3_url VARCHAR(1500) NOT NULL,
-    s3_key VARCHAR(1024) NOT NULL,
     tamanho VARCHAR(50) NOT NULL,
     fk_tipo_arquivo_id UUID NOT NULL,
     FOREIGN KEY (fk_tipo_arquivo_id) REFERENCES tipo_arquivo (id)
