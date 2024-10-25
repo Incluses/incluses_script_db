@@ -102,21 +102,28 @@ CREATE OR REPLACE PROCEDURE criar_setor(
     END;
 $$;
 
-CREATE OR REPLACE PROCEDURE criar_curso(
+CREATE OR REPLACE FUNCTION criar_curso(
     c_descricao VARCHAR,
     c_nome VARCHAR,
     c_perfil_id UUID
-) LANGUAGE plpgsql AS $$
-    DECLARE 
-        id_curso UUID;
-        permissao BOOLEAN := false;
-    BEGIN 
-        -- Inserindo curso 
-        INSERT INTO curso(descricao, nome, fk_perfil_id) VALUES (c_descricao, c_nome, c_perfil_id) RETURNING id INTO id_curso;
+) RETURNS UUID 
+LANGUAGE plpgsql AS $$
+DECLARE 
+    id_curso UUID;
+    permissao BOOLEAN := false;
+BEGIN 
+    -- Inserindo curso 
+    INSERT INTO curso(descricao, nome, fk_perfil_id) 
+    VALUES (c_descricao, c_nome, c_perfil_id) 
+    RETURNING id INTO id_curso;
 
-        -- Inserindo permissão do curso 
-        INSERT INTO permissao_curso(fk_curso_id, permissao) VALUES (id_curso, permissao);
-    END;
+    -- Inserindo permissão do curso 
+    INSERT INTO permissao_curso(fk_curso_id, permissao) 
+    VALUES (id_curso, permissao);
+
+    -- Retornando ID do curso
+    RETURN id_curso;
+END;
 $$;
 
 CREATE OR REPLACE PROCEDURE criar_usuario(
