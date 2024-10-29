@@ -20,6 +20,6 @@ Caso queira parar o Docker, utilize o comando:
 
 ## Feito por
 
--- Luca
+[Luca Almeida Lucareli](https://github.com/LucaLucareli)
 
--- Olivia
+[Olivia Farias Domingues](https://github.com/oliviaworks)
