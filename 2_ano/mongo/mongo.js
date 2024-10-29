@@ -17,12 +17,6 @@ postagem: {
     ]
 }
 
-funcoes: {
-    id: UUID
-    nome: String
-    userIds: [UUID]
-}
-
 situacao_trabalhista: {
     id: UUID
     nome: String
