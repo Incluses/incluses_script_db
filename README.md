@@ -21,6 +21,12 @@ Caso queira parar o Docker, utilize o comando:
     docker-compose -f docker-compose.yml down
 ```
 
+
+
+
+
+
+
 # Banco Relacional Incluses
 
 ## Objetivo do Banco de Dados
@@ -493,7 +499,10 @@ CREATE TABLE permissao_curso (
 
 
 
-## Banco de dados não relacional
+
+
+
+# Banco de dados não relacional
 
 Os banco de dados não relacionais que usamos são o: MongoDb e Redis
 
