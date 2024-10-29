@@ -274,7 +274,190 @@ CREATE TABLE telefone (
 | `fk_perfil_id`   | UUID       | Chave estrangeira para `perfil` | NOT NULL, FOREIGN KEY (REFERENCES `perfil(id)`) |
 
 ---
+### `curso`
+#### Objetivo
+Armazenar informações sobre cursos.
 
+#### Script
+```sql
+CREATE TABLE curso (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    descricao VARCHAR(300),
+    fk_perfil_id UUID NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    FOREIGN KEY (fk_perfil_id) REFERENCES perfil (id)
+);
+```
 
+#### Campos
+| Coluna           | Tipo       | Descrição                       | Restrições                                  |
+|------------------|------------|---------------------------------|---------------------------------------------|
+| `id`             | UUID       | Identificador único             | PRIMARY KEY, DEFAULT gen_random_uuid()      |
+| `descricao`      | VARCHAR(300)| Descrição do curso             | NULL                                        |
+| `fk_perfil_id`   | UUID       | Chave estrangeira para perfil   | NOT NULL, FOREIGN KEY (REFERENCES perfil(id))|
+| `nome`           | VARCHAR(100)| Nome do curso                  | NOT NULL                                    |
 
+---
 
+### `material_curso`
+#### Objetivo
+Armazenar materiais relacionados aos cursos.
+
+#### Script
+```sql
+CREATE TABLE material_curso (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    nome VARCHAR(255) NOT NULL,
+    fk_curso_id UUID NOT NULL,
+    fk_arquivo_id UUID NOT NULL,
+    descricao VARCHAR(500),
+    FOREIGN KEY (fk_curso_id) REFERENCES curso (id),
+    FOREIGN KEY (fk_arquivo_id) REFERENCES arquivo (id)
+);
+```
+
+#### Campos
+| Coluna           | Tipo       | Descrição                       | Restrições                                  |
+|------------------|------------|---------------------------------|---------------------------------------------|
+| `id`             | UUID       | Identificador único             | PRIMARY KEY, DEFAULT gen_random_uuid()      |
+| `nome`           | VARCHAR(255)| Nome do material               | NOT NULL                                    |
+| `fk_curso_id`    | UUID       | Chave estrangeira para curso    | NOT NULL, FOREIGN KEY (REFERENCES curso(id))|
+| `fk_arquivo_id`  | UUID       | Chave estrangeira para arquivo  | NOT NULL, FOREIGN KEY (REFERENCES arquivo(id))|
+| `descricao`      | VARCHAR(500)| Descrição do material          | NULL                                        |
+
+--- 
+
+### `inscricao_curso`
+#### Objetivo
+Armazenar inscrições dos usuários comuns em cursos. Uma empresa não pode se inscrever em um curso, apenas criar.
+
+#### Script
+```sql
+CREATE TABLE inscricao_curso (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    fk_curso_id UUID NOT NULL,
+    fk_usuario_id UUID NOT NULL,
+    FOREIGN KEY (fk_curso_id) REFERENCES curso (id),
+    FOREIGN KEY (fk_usuario_id) REFERENCES usuario (id)
+);
+```
+
+#### Campos
+| Coluna           | Tipo       | Descrição                       | Restrições                                  |
+|------------------|------------|---------------------------------|---------------------------------------------|
+| `id`             | UUID       | Identificador único             | PRIMARY KEY, DEFAULT gen_random_uuid()      |
+| `fk_curso_id`    | UUID       | Chave estrangeira para curso    | NOT NULL, FOREIGN KEY (REFERENCES curso(id))|
+| `fk_usuario_id`  | UUID       | Chave estrangeira para usuário   | NOT NULL, FOREIGN KEY (REFERENCES usuario(id))|
+
+### `vaga`
+#### Objetivo
+Armazenar informações sobre vagas. Um usuário comum não pode criar uma vaga, apenas se inscrever. Uma empresa não pode se inscrever em uma vaga, apenas criar.
+
+#### Script
+```sql
+CREATE TABLE vaga (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    descricao VARCHAR(300) NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    fk_empresa_id UUID NOT NULL,
+    fk_tipo_vaga_id UUID NOT NULL,
+    FOREIGN KEY (fk_empresa_id) REFERENCES empresa (id),
+    FOREIGN KEY (fk_tipo_vaga_id) REFERENCES tipo_vaga (id)
+);
+```
+#### Campos
+| Coluna           | Tipo       | Descrição                       | Restrições                                  |
+|------------------|------------|---------------------------------|---------------------------------------------|
+| `id`             | UUID       | Identificador único             | PRIMARY KEY, DEFAULT gen_random_uuid()      |
+| `descricao`      | VARCHAR(300)| Descrição da vaga              | NOT NULL                                    |
+| `nome`           | VARCHAR(100)| Nome da vaga                   | NOT NULL                                    |
+| `fk_empresa_id`  | UUID       | Chave estrangeira para empresa  | NOT NULL, FOREIGN KEY (REFERENCES empresa(id))|
+| `fk_tipo_vaga_id`| UUID       | Chave estrangeira para tipo de vaga | NOT NULL, FOREIGN KEY (REFERENCES tipo_vaga(id))|
+
+---
+
+### `inscricao_vaga`
+#### Objetivo
+Ligar as vagas com os usuários comuns.
+
+#### Script
+```sql
+CREATE TABLE inscricao_vaga (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    fk_usuario_id UUID NOT NULL,
+    fk_vaga_id UUID NOT NULL,
+    FOREIGN KEY (fk_vaga_id) REFERENCES vaga (id),
+    FOREIGN KEY (fk_usuario_id) REFERENCES usuario (id)
+);
+```
+
+#### Campos
+| Coluna           | Tipo       | Descrição                       | Restrições                                  |
+|------------------|------------|---------------------------------|---------------------------------------------|
+| `id`             | UUID       | Identificador único             | PRIMARY KEY, DEFAULT gen_random_uuid()      |
+| `fk_usuario_id`  | UUID       | Chave estrangeira para usuário   | NOT NULL, FOREIGN KEY (REFERENCES usuario(id))|
+| `fk_vaga_id`     | UUID       | Chave estrangeira para vaga     | NOT NULL, FOREIGN KEY (REFERENCES vaga(id)) |
+
+---
+
+### `avaliacao_curso`
+#### Objetivo
+Armazenar avaliações de cursos.
+
+#### Script
+```sql
+CREATE TABLE avaliacao_curso (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    nota NUMERIC NOT NULL,
+    fk_curso_id UUID REFERENCES curso (id),
+    fk_usuario_id UUID REFERENCES usuario (id)
+);
+```
+#### Campos
+| Coluna           | Tipo       | Descrição                       | Restrições                                  |
+|------------------|------------|---------------------------------|---------------------------------------------|
+| `id`             | UUID       | Identificador único             | PRIMARY KEY, DEFAULT gen_random_uuid()      |
+| `nota`           | NUMERIC    | Nota da avaliação               | NOT NULL                                    |
+| `fk_curso_id`    | UUID       | Chave estrangeira para curso    | FOREIGN KEY (REFERENCES curso(id))          |
+| `fk_usuario_id`  | UUID       | Chave estrangeira para usuário   | FOREIGN KEY (REFERENCES usuario(id))        |
+
+---
+
+### `permissao_vaga` 
+#### Objetivo
+Armazenar permissões relacionadas às vagas.
+
+#### Script
+```sql
+CREATE TABLE permissao_vaga (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    permissao BOOLEAN DEFAULT false,
+    fk_vaga_id UUID REFERENCES vaga (id)
+);
+```
+#### Campos
+| Coluna           | Tipo       | Descrição                       | Restrições                                  |
+|------------------|------------|---------------------------------|---------------------------------------------|
+| `id`             | UUID       | Identificador único             | PRIMARY KEY, DEFAULT gen_random_uuid()      |
+| `permissao`      | BOOLEAN    | Indica se a permissão é concedida| DEFAULT false                               |
+| `fk_vaga_id`     | UUID       | Chave estrangeira para vaga     | FOREIGN KEY (REFERENCES vaga(id))           |
+
+--- 
+
+### `permissao_curso`
+#### Objetivo
+Armazenar permissões relacionadas a cursos.
+
+#### Script
+```sql
+CREATE TABLE permissao_curso (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    permissao BOOLEAN DEFAULT false,
+    fk_curso_id UUID REFERENCES curso (id)
+);
+```
+#### Campos
+| Coluna           | Tipo       | Descrição                       | Restrições                                  |
+|------------------|------------|---------------------------------|---------------------------------------------|
+| `id`             | UUID       | Identificador único             | PRIMARY KEY, DEFAULT gen_random_uuid()      |
+| `permissao`      | BOOLEAN    | Indica se a permissão é concedida| DEFAULT false                               |
