@@ -1,6 +1,3 @@
-
-# Banco de dados
-
 ## Instalação
 
 Primeiramente, utilize o comando:
@@ -20,12 +17,6 @@ Caso queira parar o Docker, utilize o comando:
 ```bash
     docker-compose -f docker-compose.yml down
 ```
-
-
-
-
-
-
 
 # Banco Relacional Incluses
 
@@ -493,14 +484,29 @@ CREATE TABLE permissao_curso (
 | `id`             | UUID       | Identificador único             | PRIMARY KEY, DEFAULT gen_random_uuid()      |
 | `permissao`      | BOOLEAN    | Indica se a permissão é concedida| DEFAULT false                               |
 
+--- 
 
+### `configuracao`
+#### Objetivo
+Armazenar as configurações do perfil.
 
+#### Script
+```sql
+CREATE TABLE configuracao (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    notificacao BOOLEAN,
+    fk_perfil_id UUID NOT NULL,
+    FOREIGN KEY (fk_perfil_id) REFERENCES perfil (id)
+);
+```
+#### Campos
+| Coluna           | Tipo       | Descrição                       | Restrições                                  |
+|------------------|------------|---------------------------------|---------------------------------------------|
+| `id`             | UUID       | Identificador único             | PRIMARY KEY, DEFAULT gen_random_uuid()      |
+| `notificacao`     | BOOLEAN    | Indica se o perfil terá notificações| Nenhuma                             |
+| `fk_perfil_id`   |  UUID      | Chave estrangeira para `perfil` | NOT NULL |
 
-
-
-
-
-
+---
 
 # Banco de dados não relacional
 
