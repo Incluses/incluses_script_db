@@ -93,6 +93,8 @@ CREATE TABLE tipo_perfil (
 | `id`             | UUID       | Identificador único             | PRIMARY KEY, DEFAULT gen_random_uuid()      |
 | `nome`           | VARCHAR(50)| Nome do tipo de perfil          | NOT NULL                                    |
 
+---
+
 ### `situacao_trabalhista`
 #### Objetivo 
 Armazenar campos normalizados da situação trabalhista. Exemplos de dados: empregado, desempregado, autônomo.
