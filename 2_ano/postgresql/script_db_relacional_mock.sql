@@ -1,7 +1,7 @@
 --Tabela tipo_perfil
-INSERT INTO tipo_perfil (nome) VALUES 
-('Pessoa Física'),
-('Empresa');
+    INSERT INTO tipo_perfil (nome) VALUES 
+    ('Pessoa Física'),
+    ('Empresa');
 
 --Tabela situacao_trabalhista
 INSERT INTO situacao_trabalhista (nome) VALUES 
