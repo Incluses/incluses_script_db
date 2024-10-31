@@ -62,29 +62,6 @@ Essa collection armazena os posts dos usuários no aplicativo.
 }
 ```
 
-## Collection: **situacao_trabalhista**
-
-Essa collection armazena as situações trabalhistas dos usuários, como "Empregado", "Desempregado", etc.
-
-| Parâmetro      | Tipo                 | Descrição                                                                                 |
-|----------------|----------------------|-------------------------------------------------------------------------------------------|
-| `id`           | `UUID`               | Identificador único da situação trabalhista.                                              |
-| `nome`         | `String`             | Nome descritivo da situação trabalhista, exemplo: "Empregado".                            |
-| `usersIds`     | `Array<UUID>`        | Array contendo os IDs dos usuários que possuem essa situação trabalhista.                 |
-
-### Exemplo de Documento `situacao_trabalhista`
-
-```json
-{
-  "id": "550e8400-e29b-41d4-a716-446655440000",
-  "nome": "Empregado",
-  "usersIds": [
-    "550e8400-e29b-41d4-a716-446655440001",
-    "550e8400-e29b-41d4-a716-446655440002"
-  ]
-}
-```
-
 ## Collection: **Conversas**
 
 Essa collection armazena informações sobre as conversas entre os usuários, incluindo se são públicas ou privadas.
