@@ -1,9 +1,3 @@
-
-# Banco de dados
-
-
-
-
 ## Instalação
 
 Primeiramente, utilize o comando:
@@ -24,10 +18,8 @@ Caso queira parar o Docker, utilize o comando:
     docker-compose -f docker-compose.yml down
 ```
 
-
-    
 ## Feito por
 
--- Luca
+[Luca Almeida Lucareli](https://github.com/LucaLucareli)
 
--- Olivia
+[Olivia Farias Domingues](https://github.com/oliviaworks)
