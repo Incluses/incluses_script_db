@@ -17,12 +17,6 @@ postagem: {
     ]
 }
 
-situacao_trabalhista: {
-    id: UUID
-    nome: String
-    usersIds: [UUID]
-}
-
 Conversas: {
     id: Number;
     tipo: [publico, privado]

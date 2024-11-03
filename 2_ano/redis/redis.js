@@ -1,9 +1,11 @@
-user_id_perfil: {
-    nome: String
-    id: Number
-    password: String
-    cpf: String
-    cnpj: String
-    token: String
+admin: {
+    id: UUID
     email: String
+    password: String
+}
+
+cod: {
+    code: UUID
+    value: String
+    expiration: Number
 }
