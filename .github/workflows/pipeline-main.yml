@@ -34,12 +34,9 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: .
+        file: ../../docker-compose.yml
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/incluses:latest
-
-    - name: Start services with Docker Compose
-      run: |
-        docker-compose up -d
+        tags: ${{ secrets.DOCKER_USERNAME }}/incluses2:latest
 
     - name: Create and start application container
       run: |
