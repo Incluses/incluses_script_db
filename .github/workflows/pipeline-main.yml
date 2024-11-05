@@ -40,7 +40,7 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build and push Docker image
+    - name: Build Docker image
       run: |
         cd ./2_ano
         docker-compose -f docker-compose.yml build
