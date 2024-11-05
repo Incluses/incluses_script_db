@@ -32,8 +32,9 @@ jobs:
 
     - name: Install Docker Compose
       run: |
-        sudo apt-get update
-        sudo apt-get install -y docker-compose
+        set -x  # Enable debug output
+        docker-compose -f ./2_ano/docker-compose.yml build
+        docker-compose -f ./2_ano/docker-compose.yml push
 
     - name: Build and push Docker image
       run: |
