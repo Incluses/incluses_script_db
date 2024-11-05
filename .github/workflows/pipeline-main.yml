@@ -24,8 +24,7 @@ jobs:
     - name: Debug Information
       run: |
         echo "Docker Username: ${{ secrets.DOCKER_USERNAME }}"
-        echo "Docker Username: ${{ secrets.DOCKER_PASSWORD }}"
-
+        echo "Docker Password: ${{ secrets.DOCKER_PASSWORD }}"
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
