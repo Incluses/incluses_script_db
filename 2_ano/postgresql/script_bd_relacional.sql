@@ -153,3 +153,12 @@ CREATE TABLE permissao_curso (
     permissao BOOLEAN DEFAULT false,
     fk_curso_id UUID REFERENCES curso (id)
 );
+
+CREATE INDEX idx_razao_social_empresa
+ON empresa (razao_social);
+
+CREATE INDEX idx_cnpj_empresa
+ON empresa (cnpj);
+
+CREATE INDEX idx_cpf_usuario
+ON usuario (cpf);
