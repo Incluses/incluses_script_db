@@ -327,20 +327,3 @@ CREATE OR REPLACE PROCEDURE criar_material_curso(
         INSERT INTO material_curso(descricao, nome, fk_curso_id, fk_arquivo_id) VALUES (mc_descricao, mc_nome, mc_curso_id, mc_arquivo_id);
     END;
 $$;
-
-CREATE OR REPLACE PROCEDURE deletar_material_curso(
-    mc_material_curso_id UUID
-) LANGUAGE plpgsql AS $$
-    DECLARE 
-        id_arquivo UUID;
-    BEGIN
-        -- Pegando id do arquivo do material do curso
-        SELECT fk_arquivo_id INTO id_arquivo FROM material_curso WHERE id = mc_material_curso_id;
-
-        -- Deletando material curso 
-        DELETE FROM material_curso WHERE id = mc_material_curso_id;
-
-        -- Deletando arquivo 
-        DELETE FROM arquivo WHERE id = id_arquivo;
-    END;
-$$;
