@@ -162,3 +162,6 @@ ON empresa (cnpj);
 
 CREATE INDEX idx_cpf_usuario
 ON usuario (cpf);
+
+CREATE INDEX idx_email_perfil
+ON perfil (email);

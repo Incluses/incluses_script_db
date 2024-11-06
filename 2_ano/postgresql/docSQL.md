@@ -508,6 +508,28 @@ CREATE TABLE configuracao (
 
 ---
 
+#### Index
+
+#### Index criado para deixa
+
+Criamos um índice para melhorar o desempenho das consultas nas tabelas empresa, usuario e perfil, otimizando a busca por dados nas colunas razao_social, cnpj, cpf e email, tornando-a mais rápida e eficiente.
+
+#### Script
+```sql
+    CREATE INDEX idx_razao_social_empresa
+    ON empresa (razao_social);
+
+    CREATE INDEX idx_cnpj_empresa
+    ON empresa (cnpj);
+
+    CREATE INDEX idx_cpf_usuario
+    ON usuario (cpf);
+        
+    CREATE INDEX idx_email_perfil
+    ON perfil (email);
+```
+
+
 ## Feito por
 
 [Luca Almeida Lucareli](https://github.com/LucaLucareli)
