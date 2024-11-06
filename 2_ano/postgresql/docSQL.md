@@ -510,8 +510,6 @@ CREATE TABLE configuracao (
 
 #### Index
 
-#### Index criado para deixa
-
 Criamos um índice para melhorar o desempenho das consultas nas tabelas empresa, usuario e perfil, otimizando a busca por dados nas colunas razao_social, cnpj, cpf e email, tornando-a mais rápida e eficiente.
 
 #### Script
